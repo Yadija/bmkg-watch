@@ -31,9 +31,10 @@ module.exports = {
     'plugin:react/recommended',
     'plugin:jsx-a11y/recommended',
     'plugin:react-hooks/recommended',
+    'plugin:tailwindcss/recommended',
     'plugin:prettier/recommended', // Make sure this is always the last element in the array.
   ],
-  plugins: ['simple-import-sort', 'react-refresh', 'prettier'],
+  plugins: ['simple-import-sort', 'react-refresh', 'prettier', 'tailwindcss'],
   rules: {
     'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
     'prettier/prettier': ['error', { usePrettierrc: true }],
