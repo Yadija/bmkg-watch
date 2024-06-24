@@ -164,6 +164,15 @@ function App() {
 
   return (
     <main className='container mx-auto p-4'>
+      <header className='mb-5 mt-10 rounded-lg border p-4 shadow-md'>
+        <p className='text-lg'>
+          Data ini diperoleh dari{' '}
+          <a href='https://www.bmkg.go.id/' className='underline'>
+            BMKG
+          </a>
+        </p>
+      </header>
+
       <section className='rounded-lg border p-4 shadow-md'>
         <h1 className='mb-4 text-center text-2xl font-bold'>Info Gempa Terbaru</h1>
         <section className='flex flex-col lg:flex-row'>
@@ -191,7 +200,8 @@ function App() {
               <span className='font-bold'>Potensi:</span> {newestEarthquake.potensi}
             </p>
             <p>
-              <span className='font-bold'>Dirasakan:</span> {newestEarthquake.dirasakan}
+              <span className='font-bold'>Dirasakan (Skala MMI):</span>{' '}
+              {newestEarthquake.dirasakan}
             </p>
           </section>
           <section className='m-auto w-full max-w-[450px]'>
@@ -205,11 +215,10 @@ function App() {
       </section>
 
       <section className='flex flex-col justify-between gap-5 lg:flex-row'>
-        {/* <section> */}
         <section className='flex flex-[1] justify-between gap-5'>
           <section className='flex flex-[1] flex-col gap-5'>
             <h1 className='mt-4 text-center text-2xl font-bold'>
-              Daftar 5 Gempabumi M 5,0+
+              Daftar 15 Gempabumi M 5,0+
             </h1>
             {earthquake5Min &&
               earthquake5Min.map((earthquake, index) => (
@@ -276,7 +285,7 @@ function App() {
         <section className='flex flex-[1] justify-between gap-5'>
           <section className='flex flex-[1] flex-col gap-5'>
             <h1 className='mt-4 text-center text-2xl font-bold'>
-              Daftar 5 Gempabumi Dirasakan
+              Daftar 15 Gempabumi Dirasakan
             </h1>
             {earthquakeFelt &&
               earthquakeFelt.map((earthquake, index) => (
@@ -306,7 +315,7 @@ function App() {
                     </p>
                     {earthquake.dirasakan && (
                       <p>
-                        <span className='font-bold'>Dirasakan:</span>{' '}
+                        <span className='font-bold'>Dirasakan (Skala MMI):</span>{' '}
                         {earthquake.dirasakan}
                       </p>
                     )}
@@ -332,7 +341,7 @@ function App() {
                           Number(earthquake.coordinates[1]),
                         ]}
                       >
-                        <Popup>{earthquake.potensi}</Popup>
+                        <Popup>{earthquake.dirasakan}</Popup>
                       </Marker>
                     </MapContainer>
                   </section>
