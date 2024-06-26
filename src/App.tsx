@@ -1,13 +1,13 @@
 import 'leaflet/dist/leaflet.css';
 
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { fetchEarthquake5Min, fetchEarthquakeFelt, fetchNewestEarthquake } from './api';
 import EarthquakeDetail from './components/earthquake/EarthquakeDetail';
 import EarthquakeList from './components/earthquake/EarthquakeList';
 import { EarthquakeData, NewestEarthquake } from './interface';
 
-const App: React.FC = () => {
+export default function App() {
   const [newestEarthquake, setNewestEarthquake] = useState<NewestEarthquake | null>(null);
   const [earthquake5Min, setEarthquake5Min] = useState<EarthquakeData[] | null>(null);
   const [earthquakeFelt, setEarthquakeFelt] = useState<EarthquakeData[] | null>(null);
@@ -33,7 +33,7 @@ const App: React.FC = () => {
 
   return (
     <main className='container mx-auto p-4'>
-      <header className='mb-5 mt-10 rounded-lg border p-4 shadow-md'>
+      <header className='mb-5 rounded-lg border p-4 shadow-md'>
         <p className='text-lg'>
           Data ini diperoleh dari{' '}
           <a href='https://www.bmkg.go.id/' className='underline'>
@@ -53,6 +53,4 @@ const App: React.FC = () => {
       </section>
     </main>
   );
-};
-
-export default App;
+}

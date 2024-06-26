@@ -1,3 +1,4 @@
+import { Card, CardBody, Typography } from '@material-tailwind/react';
 import { MapContainer, Marker, Popup, TileLayer } from 'react-leaflet';
 
 import { EarthquakeData } from '../../interface';
@@ -8,41 +9,44 @@ interface EarthquakeItemProps {
 
 export default function EarthquakeItem({ earthquake }: EarthquakeItemProps) {
   return (
-    <section className='flex flex-[1] flex-col justify-evenly rounded-lg border p-4 shadow-md lg:px-10 xl:flex-row'>
-      <section className='flex flex-[1] flex-col justify-evenly'>
-        <h2 className='mb-2 text-xl font-semibold'>{earthquake.wilayah}</h2>
-        <p>
+    <Card className='flex w-full flex-col justify-evenly xl:flex-row'>
+      <CardBody className='flex w-full flex-col justify-evenly'>
+        <Typography variant='h2' className='mb-2 text-xl font-semibold'>
+          {earthquake.wilayah}
+        </Typography>
+
+        <Typography variant='paragraph'>
           <span className='font-bold'>Tanggal:</span> {earthquake.tanggal}
-        </p>
-        <p>
+        </Typography>
+        <Typography variant='paragraph'>
           <span className='font-bold'>Jam:</span> {earthquake.jam}
-        </p>
-        <p>
+        </Typography>
+        <Typography variant='paragraph'>
           <span className='font-bold'>Latitude:</span> {earthquake.lintang}
-        </p>
-        <p>
+        </Typography>
+        <Typography variant='paragraph'>
           <span className='font-bold'>Longitude:</span> {earthquake.bujur}
-        </p>
-        <p>
+        </Typography>
+        <Typography variant='paragraph'>
           <span className='font-bold'>Magnitude:</span> {earthquake.magnitude}
-        </p>
-        <p>
+        </Typography>
+        <Typography variant='paragraph'>
           <span className='font-bold'>Kedalaman:</span> {earthquake.kedalaman}
-        </p>
+        </Typography>
         {earthquake.potensi && (
-          <p>
+          <Typography variant='paragraph'>
             <span className='font-bold'>Potensi:</span> {earthquake.potensi}
-          </p>
+          </Typography>
         )}
         {earthquake.dirasakan && (
-          <p>
+          <Typography variant='paragraph'>
             <span className='font-bold'>Dirasakan (Skala MMI):</span>{' '}
             {earthquake.dirasakan}
-          </p>
+          </Typography>
         )}
-      </section>
+      </CardBody>
 
-      <section className='m-auto mt-5 w-full xl:mt-0 xl:max-w-[350px]'>
+      <CardBody className='m-auto mt-5 w-full xl:mt-0 xl:max-w-[350px]'>
         <MapContainer
           center={[Number(earthquake.coordinates[0]), Number(earthquake.coordinates[1])]}
           zoom={8}
@@ -62,7 +66,7 @@ export default function EarthquakeItem({ earthquake }: EarthquakeItemProps) {
             <Popup>{earthquake.potensi || earthquake.dirasakan}</Popup>
           </Marker>
         </MapContainer>
-      </section>
-    </section>
+      </CardBody>
+    </Card>
   );
 }

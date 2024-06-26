@@ -1,3 +1,5 @@
+import { Card, CardBody, Typography } from '@material-tailwind/react';
+
 import { NewestEarthquake } from '../../interface';
 
 interface EarthquakeDetailProps {
@@ -6,36 +8,40 @@ interface EarthquakeDetailProps {
 
 export default function EarthquakeDetail({ earthquake }: EarthquakeDetailProps) {
   return (
-    <section className='rounded-lg border p-4 shadow-md'>
-      <h1 className='mb-4 text-center text-2xl font-bold'>Info Gempa Terbaru</h1>
-      <section className='flex flex-col lg:flex-row'>
+    <Card className='rounded-lg border p-4 shadow-md'>
+      <Typography variant='h1' className='mb-4 text-center text-2xl font-bold'>
+        Info Gempa Terbaru
+      </Typography>
+      <CardBody className='flex flex-col lg:flex-row'>
         <section className='flex flex-[1] flex-col justify-evenly px-4 lg:px-10'>
-          <h2 className='mb-2 text-xl font-semibold'>{earthquake.wilayah}</h2>
-          <p>
+          <Typography variant='h2' className='mb-2 text-xl font-semibold'>
+            {earthquake.wilayah}
+          </Typography>
+          <Typography variant='paragraph'>
             <span className='font-bold'>Tanggal:</span> {earthquake.tanggal}
-          </p>
-          <p>
+          </Typography>
+          <Typography variant='paragraph'>
             <span className='font-bold'>Jam:</span> {earthquake.jam}
-          </p>
-          <p>
+          </Typography>
+          <Typography variant='paragraph'>
             <span className='font-bold'>Latitude:</span> {earthquake.lintang}
-          </p>
-          <p>
+          </Typography>
+          <Typography variant='paragraph'>
             <span className='font-bold'>Longitude:</span> {earthquake.bujur}
-          </p>
-          <p>
+          </Typography>
+          <Typography variant='paragraph'>
             <span className='font-bold'>Magnitude:</span> {earthquake.magnitude}
-          </p>
-          <p>
+          </Typography>
+          <Typography variant='paragraph'>
             <span className='font-bold'>Kedalaman:</span> {earthquake.kedalaman}
-          </p>
-          <p>
+          </Typography>
+          <Typography variant='paragraph'>
             <span className='font-bold'>Potensi:</span> {earthquake.potensi}
-          </p>
-          <p>
+          </Typography>
+          <Typography variant='paragraph'>
             <span className='font-bold'>Dirasakan (Skala MMI):</span>{' '}
             {earthquake.dirasakan}
-          </p>
+          </Typography>
         </section>
         <section className='m-auto w-full max-w-[450px]'>
           <img
@@ -44,7 +50,7 @@ export default function EarthquakeDetail({ earthquake }: EarthquakeDetailProps) 
             className='mt-2 h-auto w-full'
           />
         </section>
-      </section>
-    </section>
+      </CardBody>
+    </Card>
   );
 }
