@@ -1,4 +1,7 @@
 import { Card, CardBody, Typography } from '@material-tailwind/react';
+import L from 'leaflet';
+import icon from 'leaflet/dist/images/marker-icon.png';
+import iconShadow from 'leaflet/dist/images/marker-shadow.png';
 import { MapContainer, Marker, Popup, TileLayer } from 'react-leaflet';
 
 import { EarthquakeData } from '../../interface';
@@ -6,6 +9,13 @@ import { EarthquakeData } from '../../interface';
 interface EarthquakeItemProps {
   earthquake: EarthquakeData;
 }
+
+const DefaultIcon = L.icon({
+  iconUrl: icon,
+  shadowUrl: iconShadow,
+});
+
+L.Marker.prototype.options.icon = DefaultIcon;
 
 export default function EarthquakeItem({ earthquake }: EarthquakeItemProps) {
   return (
@@ -46,7 +56,7 @@ export default function EarthquakeItem({ earthquake }: EarthquakeItemProps) {
         )}
       </CardBody>
 
-      <CardBody className='m-auto mt-5 w-full xl:mt-0 xl:max-w-[350px]'>
+      <section className='w-full xl:mt-0 xl:max-w-[350px]'>
         <MapContainer
           center={[Number(earthquake.coordinates[0]), Number(earthquake.coordinates[1])]}
           zoom={8}
@@ -66,7 +76,7 @@ export default function EarthquakeItem({ earthquake }: EarthquakeItemProps) {
             <Popup>{earthquake.potensi || earthquake.dirasakan}</Popup>
           </Marker>
         </MapContainer>
-      </CardBody>
+      </section>
     </Card>
   );
 }
