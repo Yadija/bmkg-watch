@@ -1,12 +1,17 @@
 import { Card, CardBody, Typography } from '@material-tailwind/react';
 
 import { NewestEarthquake } from '../../interface';
+import EarthquakeDetailSkeleton from '../skeleton/EarthquakeDetailSkeleton';
 
 interface EarthquakeDetailProps {
-  earthquake: NewestEarthquake;
+  earthquake: NewestEarthquake | null;
 }
 
 export default function EarthquakeDetail({ earthquake }: EarthquakeDetailProps) {
+  if (!earthquake) {
+    return <EarthquakeDetailSkeleton />;
+  }
+
   return (
     <Card className='rounded-lg border p-4 shadow-md'>
       <Typography variant='h1' className='mb-4 text-center text-2xl font-bold'>
@@ -17,6 +22,7 @@ export default function EarthquakeDetail({ earthquake }: EarthquakeDetailProps) 
           <Typography variant='h2' className='mb-2 text-xl font-semibold'>
             {earthquake.wilayah}
           </Typography>
+
           <Typography variant='paragraph'>
             <span className='font-bold'>Tanggal:</span> {earthquake.tanggal}
           </Typography>

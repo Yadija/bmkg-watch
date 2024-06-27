@@ -27,10 +27,6 @@ export default function App() {
     fetchData();
   }, []);
 
-  if (!newestEarthquake) {
-    return <div className='mt-10 text-center'>Loading...</div>;
-  }
-
   return (
     <main className='container mx-auto p-4'>
       <header className='mb-5 rounded-lg border p-4 shadow-md'>

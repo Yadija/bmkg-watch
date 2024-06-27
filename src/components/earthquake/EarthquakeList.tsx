@@ -1,6 +1,7 @@
 import { Typography } from '@material-tailwind/react';
 
 import { EarthquakeData } from '../../interface';
+import EarthquakeListSkeleton from '../skeleton/EarthquakeListSkeleton';
 import EarthquakeItem from './EarthquakeItem';
 
 interface EarthquakeListProps {
@@ -10,7 +11,7 @@ interface EarthquakeListProps {
 
 export default function EarthquakeList({ title, earthquakes }: EarthquakeListProps) {
   if (!earthquakes) {
-    return <p>Loading...</p>;
+    return <EarthquakeListSkeleton title={title} />;
   }
 
   return (
