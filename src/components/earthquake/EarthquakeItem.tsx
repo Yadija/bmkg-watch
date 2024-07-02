@@ -13,6 +13,9 @@ interface EarthquakeItemProps {
 const DefaultIcon = L.icon({
   iconUrl: icon,
   shadowUrl: iconShadow,
+  iconSize: [25, 41],
+  iconAnchor: [12, 41],
+  popupAnchor: [1, -34],
 });
 
 L.Marker.prototype.options.icon = DefaultIcon;
@@ -72,6 +75,7 @@ export default function EarthquakeItem({ earthquake }: EarthquakeItemProps) {
               Number(earthquake.coordinates[0]),
               Number(earthquake.coordinates[1]),
             ]}
+            // icon={icon}
           >
             <Popup>{earthquake.potensi || earthquake.dirasakan}</Popup>
           </Marker>
