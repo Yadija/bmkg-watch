@@ -34,7 +34,7 @@ export interface Timerange {
   type: string;
   datetime: string;
   hour: string | null;
-  minute: string | null;
+  day: string | null;
   values: Value[];
 }
 
