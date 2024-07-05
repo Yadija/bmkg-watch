@@ -7,7 +7,7 @@ export default function App() {
   return (
     <main className='container mx-auto p-4'>
       <Routes>
-        <Route path='/' element={<EarthquakePage />} />
+        <Route path='/gempa' element={<EarthquakePage />} />
         <Route path='/cuaca' element={<WeatherPage />} />
       </Routes>
     </main>
