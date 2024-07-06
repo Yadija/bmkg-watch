@@ -58,7 +58,7 @@ export default function EarthquakeDetail({ earthquake }: EarthquakeDetailProps) 
             <img
               src={`https://data.bmkg.go.id/DataMKG/TEWS/${earthquake.shakemap}`}
               alt='Shakemap'
-              className='mt-2 h-auto w-full cursor-pointer overflow-hidden transition-opacity hover:opacity-90'
+              className='mt-2 h-auto w-full cursor-pointer overflow-hidden bg-gray-200 transition-opacity hover:opacity-90'
             />
           </button>
         </CardBody>

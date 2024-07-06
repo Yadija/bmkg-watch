@@ -2,7 +2,7 @@ import { Typography } from '@material-tailwind/react';
 
 export default function Footer() {
   return (
-    <footer className='flex w-full flex-col items-center justify-center border-t border-blue-gray-50 p-4 md:flex-row md:justify-between'>
+    <footer className='flex w-full flex-col items-center justify-center border-t border-blue-gray-50 bg-white p-4 md:flex-row md:justify-between'>
       <Typography
         variant='small'
         className='mb-4 text-center font-normal text-blue-gray-900 md:mb-0'
