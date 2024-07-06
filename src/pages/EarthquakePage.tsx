@@ -27,15 +27,6 @@ export default function EarthquakePage() {
 
   return (
     <>
-      <header className='mb-5 rounded-lg border p-4 shadow-md'>
-        <p className='text-lg'>
-          Data ini diperoleh dari{' '}
-          <a href='https://www.bmkg.go.id/' className='underline'>
-            BMKG
-          </a>
-        </p>
-      </header>
-
       <EarthquakeDetail earthquake={newestEarthquake} />
 
       <section className='flex flex-col justify-between gap-5 lg:flex-row'>
