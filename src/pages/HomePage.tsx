@@ -27,7 +27,7 @@ export default function HomePage() {
 
   const formattedWeather = formatWeatherData(weather);
   return (
-    <section className='flex flex-col-reverse gap-5 lg:flex-row'>
+    <section className='flex min-h-[calc(100vh-160px)] flex-col-reverse gap-5 lg:flex-row'>
       <section className='flex-1'>
         <section className='flex justify-between'>
           <Typography variant='h1' className='mb-2 text-2xl font-semibold'>

@@ -1,5 +1,6 @@
 import { Route, Routes } from 'react-router-dom';
 
+import Footer from './components/Footer';
 import Navbar from './components/Navbar';
 import EarthquakePage from './pages/EarthquakePage';
 import HomePage from './pages/HomePage';
@@ -16,6 +17,7 @@ export default function App() {
           <Route path='/cuaca' element={<WeatherPage />} />
         </Routes>
       </main>
+      <Footer />
     </>
   );
 }
