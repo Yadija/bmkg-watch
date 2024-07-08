@@ -8,14 +8,13 @@ import { formatWeatherData } from '../utils';
 export default function HomePage() {
   const [newestEarthquake, setNewestEarthquake] = useState<NewestEarthquake | null>(null);
   const [weather, setWeather] = useState<WeatherData | null>(null);
-  const [valueArea, setValueArea] = useState<string>('');
+  const [areaId, setAreaId] = useState<string>('');
 
   useEffect(() => {
     const fetchData = async () => {
       const weather = await fetchWeather();
       setWeather(weather);
-
-      if (weather) setValueArea(weather.areas[0].id);
+      setAreaId(weather?.areas[0].id || '');
 
       const earthquake = await fetchNewestEarthquake();
       setNewestEarthquake(earthquake);
@@ -23,9 +22,9 @@ export default function HomePage() {
 
     fetchData();
   }, []);
-  if (!weather) return null;
 
-  const formattedWeather = formatWeatherData(weather);
+  const formattedWeather = weather ? formatWeatherData(weather) : null;
+
   return (
     <>
       <header className='mb-5 rounded-lg border bg-green-300 p-4 shadow-md'>
@@ -60,77 +59,128 @@ export default function HomePage() {
             </a>
           </section>
 
-          <Select
-            variant='outlined'
-            label='-- Pilih Wilayah --'
-            value={valueArea}
-            onChange={(value) => {
-              if (value) setValueArea(value);
-            }}
-          >
-            {formattedWeather.areas.map((area) => (
-              <Option key={area.id} value={area.id}>
-                {area.name}
-              </Option>
-            ))}
-          </Select>
+          {formattedWeather ? (
+            <>
+              <Select
+                variant='outlined'
+                label='-- Pilih Wilayah --'
+                value={areaId}
+                onChange={(value) => {
+                  if (value) setAreaId(value);
+                }}
+              >
+                {formattedWeather.areas.map((area) => (
+                  <Option key={area.id} value={area.id}>
+                    {area.name}
+                  </Option>
+                ))}
+              </Select>
 
-          {valueArea &&
-            formattedWeather.areas
-              .filter((area) => area.id === valueArea)
-              .map((area) => (
-                <Card key={area.id} className='mt-2'>
-                  <CardBody>
-                    <Typography variant='h2' className='mb-2 text-xl font-semibold'>
-                      {area.name}{' '}
-                      <span className='text-sm'>({formattedWeather.issue.datetime})</span>
-                    </Typography>
+              {areaId &&
+                formattedWeather.areas
+                  .filter((area) => area.id === areaId)
+                  .map((area) => (
+                    <Card key={area.id} className='mt-2'>
+                      <CardBody>
+                        <Typography variant='h2' className='mb-2 text-xl font-semibold'>
+                          {area.name}{' '}
+                          <span className='text-sm'>
+                            ({formattedWeather.issue.datetime})
+                          </span>
+                        </Typography>
 
-                    <section className='grid grid-cols-1 gap-5 md:grid-cols-2'>
-                      {area.timeranges.slice(0, 4).map((timerange) => (
-                        <Card key={timerange.hourly}>
-                          <CardBody>
-                            <Typography
-                              variant='h3'
-                              className='mb-2 text-base font-semibold'
-                            >
-                              {timerange.datetime}
-                            </Typography>
+                        <section className='grid grid-cols-1 gap-5 md:grid-cols-2'>
+                          {area.timeranges.slice(0, 4).map((timerange) => (
+                            <Card key={timerange.hourly}>
+                              <CardBody>
+                                <Typography
+                                  variant='h3'
+                                  className='mb-2 text-base font-semibold'
+                                >
+                                  {timerange.datetime}
+                                </Typography>
 
-                            {timerange.parameters.map((parameter) => (
-                              <Typography
-                                key={parameter.id}
-                                variant='paragraph'
-                                className='text-sm'
-                              >
-                                <span className='font-bold'>{parameter.description}</span>
-                                : {parameter.values[0].value} {parameter.values[0].unit}
-                              </Typography>
-                            ))}
-                          </CardBody>
-                        </Card>
-                      ))}
-                    </section>
-                  </CardBody>
-                </Card>
-              ))}
+                                {timerange.parameters.map((parameter) => (
+                                  <Typography
+                                    key={parameter.id}
+                                    variant='paragraph'
+                                    className='text-sm'
+                                  >
+                                    <span className='font-bold'>
+                                      {parameter.description}
+                                    </span>
+                                    : {parameter.values[0].value}{' '}
+                                    {parameter.values[0].unit}
+                                  </Typography>
+                                ))}
+                              </CardBody>
+                            </Card>
+                          ))}
+                        </section>
+                      </CardBody>
+                    </Card>
+                  ))}
+            </>
+          ) : (
+            <section className='w-full animate-pulse'>
+              <section className='h-10 w-full rounded-lg bg-white'></section>
+              <Card className='mt-2 w-full rounded-lg bg-white'>
+                <CardBody>
+                  <Typography
+                    as='div'
+                    variant='h2'
+                    className='mb-2 h-6 w-72 rounded-full bg-gray-300'
+                  >
+                    &nbsp;
+                  </Typography>
+                </CardBody>
+              </Card>
+            </section>
+          )}
         </section>
 
         <section className='w-full lg:w-[350px]'>
-          {newestEarthquake && (
+          {newestEarthquake ? (
             <Card className='sticky top-2 rounded-lg border p-4 shadow-md'>
               <CardBody className='flex flex-col'>
-                <Typography variant='h1' className='text-center text-2xl font-bold'>
+                <Typography variant='h1' className='mb-2 text-center text-2xl font-bold'>
                   Info Gempa Terbaru
                 </Typography>
                 <a href='/gempa' className='m-auto w-full'>
                   <img
                     src={`https://data.bmkg.go.id/DataMKG/TEWS/${newestEarthquake.shakemap}`}
                     alt='Shakemap'
-                    className='mt-2 h-auto w-full cursor-pointer overflow-hidden transition-opacity hover:opacity-90'
+                    className='h-auto w-full cursor-pointer overflow-hidden transition-opacity hover:opacity-90'
                     title={newestEarthquake.wilayah}
                   />
                 </a>
+              </CardBody>
+            </Card>
+          ) : (
+            <Card className='sticky top-2 rounded-lg border p-4 shadow-md'>
+              <CardBody>
+                <Typography variant='h1' className='mb-2 text-center text-2xl font-bold'>
+                  Info Gempa Terbaru
+                </Typography>
+
+                <section className='m-auto w-full animate-pulse'>
+                  <section className='grid h-[600px] w-full place-items-center overflow-hidden bg-gray-300 lg:h-[270px]'>
+                    <svg
+                      xmlns='http://www.w3.org/2000/svg'
+                      fill='none'
+                      viewBox='0 0 24 24'
+                      strokeWidth={2}
+                      stroke='currentColor'
+                      className='size-12 text-gray-500'
+                    >
+                      <path
+                        strokeLinecap='round'
+                        strokeLinejoin='round'
+                        d='m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 0 0 1.5-1.5V6a1.5 1.5 0 0 0-1.5-1.5H3.75A1.5 1.5 0 0 0 2.25 6v12a1.5 1.5 0 0 0 1.5 1.5Zm10.5-11.25h.008v.008h-.008V8.25Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z'
+                      />
+                    </svg>
+                  </section>
+                </section>
               </CardBody>
             </Card>
           )}
