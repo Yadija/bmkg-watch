@@ -40,18 +40,26 @@ const getHourlyParameters = (parameters: Parameter[], hour: string) =>
       const timerange = parameter.timeranges.filter(
         (timerange) => timerange.hour === hour,
       )[0];
-      return {
-        id: parameter.id,
-        description: parameter.description,
-        values: timerange.values,
-      };
-    });
+      return timerange
+        ? {
+            id: parameter.id,
+            description: parameter.description,
+            values: timerange.values,
+          }
+        : null;
+    })
+    .filter(Boolean);
 
 // Function to get timeranges from parameters
 const getTimeranges = (parameters: Parameter[]) => {
   const hourlyParameters = parameters.filter(
     (parameter) => parameter.type === 'hourly',
   )[0];
+
+  if (!hourlyParameters || !hourlyParameters.timeranges.length) {
+    return [];
+  }
+
   const hours = hourlyParameters.timeranges.map((timerange) => timerange.hour as string);
 
   return hours.map((hour) => {
@@ -70,11 +78,6 @@ const getTimeranges = (parameters: Parameter[]) => {
   });
 };
 
-// Main function to sort parameters based on timeranges
-export function sortParameter(parameters: Parameter[]) {
-  return getTimeranges(parameters);
-}
-
 // Function to get daily parameters for a specific day
 const getDailyParameters = (parameters: Parameter[], day: string) =>
   parameters
@@ -83,12 +86,15 @@ const getDailyParameters = (parameters: Parameter[], day: string) =>
       const timerange = parameter.timeranges.filter(
         (timerange) => timerange.datetime.substring(6, 8) === day,
       )[0];
-      return {
-        id: parameter.id,
-        description: parameter.description,
-        values: timerange.values,
-      };
-    });
+      return timerange
+        ? {
+            id: parameter.id,
+            description: parameter.description,
+            values: timerange.values,
+          }
+        : null;
+    })
+    .filter(Boolean);
 
 // Function to format weather data
 export function formatWeatherData(weather: WeatherData) {
@@ -99,13 +105,18 @@ export function formatWeatherData(weather: WeatherData) {
   // Map over areas to format them
   const areas = weather.areas.map((area) => {
     const { parameters, ...other } = area;
-    const timeranges = getTimeranges(parameters);
+    const timeranges = parameters ? getTimeranges(parameters) : [];
 
     // Handle daily parameters
-    const dailyParameters = parameters.filter((parameter) => parameter.type === 'daily');
-    const days = dailyParameters[0].timeranges.map((timerange) =>
-      timerange.datetime.substring(6, 8),
-    );
+    const dailyParameters = parameters
+      ? parameters.filter((parameter) => parameter.type === 'daily')
+      : [];
+    const days =
+      dailyParameters.length > 0
+        ? dailyParameters[0].timeranges.map((timerange) =>
+            timerange.datetime.substring(6, 8),
+          )
+        : [];
 
     days.forEach((day) => {
       const dailyParam = getDailyParameters(parameters, day);
