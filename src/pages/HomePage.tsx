@@ -89,34 +89,44 @@ export default function HomePage() {
                           </span>
                         </Typography>
 
-                        <section className='grid grid-cols-1 gap-5 md:grid-cols-2'>
-                          {area.timeranges.slice(0, 4).map((timerange) => (
-                            <Card key={timerange.hourly}>
-                              <CardBody>
-                                <Typography
-                                  variant='h3'
-                                  className='mb-2 text-base font-semibold'
-                                >
-                                  {timerange.datetime}
-                                </Typography>
-
-                                {timerange.parameters.map((parameter) => (
+                        {area.timeranges.length === 0 ? (
+                          <Typography variant='paragraph' className='text-red-500'>
+                            Data tidak tersedia.
+                          </Typography>
+                        ) : (
+                          <section className='grid grid-cols-1 gap-5 md:grid-cols-2'>
+                            {area.timeranges.slice(0, 4).map((timerange) => (
+                              <Card key={timerange.hourly}>
+                                <CardBody>
                                   <Typography
-                                    key={parameter.id}
-                                    variant='paragraph'
-                                    className='text-sm'
+                                    variant='h3'
+                                    className='mb-2 text-base font-semibold'
                                   >
-                                    <span className='font-bold'>
-                                      {parameter.description}
-                                    </span>
-                                    : {parameter.values[0].value}{' '}
-                                    {parameter.values[0].unit}
+                                    {timerange.datetime}
                                   </Typography>
-                                ))}
-                              </CardBody>
-                            </Card>
-                          ))}
-                        </section>
+
+                                  {timerange.parameters &&
+                                    timerange.parameters.map(
+                                      (parameter) =>
+                                        parameter && (
+                                          <Typography
+                                            key={parameter.id}
+                                            variant='paragraph'
+                                            className='text-sm'
+                                          >
+                                            <span className='font-bold'>
+                                              {parameter.description}
+                                            </span>
+                                            : {parameter.values[0].value}{' '}
+                                            {parameter.values[0].unit}
+                                          </Typography>
+                                        ),
+                                    )}
+                                </CardBody>
+                              </Card>
+                            ))}
+                          </section>
+                        )}
                       </CardBody>
                     </Card>
                   ))}
