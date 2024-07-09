@@ -167,9 +167,10 @@ export const fetchEarthquakeFelt = async (): Promise<EarthquakeData[] | null> =>
   }
 };
 
-export const fetchWeather = async (): Promise<WeatherData | null> => {
-  const url =
-    'https://data.bmkg.go.id/DataMKG/MEWS/DigitalForecast/DigitalForecast-Indonesia.xml';
+export const fetchWeather = async (
+  province = 'Indonesia',
+): Promise<WeatherData | null> => {
+  const url = `https://data.bmkg.go.id/DataMKG/MEWS/DigitalForecast/DigitalForecast-${province}.xml`;
   try {
     const response = await fetch(url);
     const text = await response.text();
