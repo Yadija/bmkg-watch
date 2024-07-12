@@ -1,4 +1,11 @@
-import { Card, CardBody, Option, Select, Typography } from '@material-tailwind/react';
+import {
+  Card,
+  CardBody,
+  Dialog,
+  Option,
+  Select,
+  Typography,
+} from '@material-tailwind/react';
 import { useEffect, useState } from 'react';
 
 import { fetchNewestEarthquake, fetchWeather } from '../api';
@@ -9,6 +16,10 @@ export default function HomePage() {
   const [newestEarthquake, setNewestEarthquake] = useState<NewestEarthquake | null>(null);
   const [weather, setWeather] = useState<WeatherData | null>(null);
   const [areaId, setAreaId] = useState<string>('');
+
+  // dialog
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen((prev) => !prev);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -156,14 +167,14 @@ export default function HomePage() {
                 <Typography variant='h1' className='mb-2 text-center text-2xl font-bold'>
                   Info Gempa Terbaru
                 </Typography>
-                <a href='/gempa' className='m-auto w-full'>
+                <button className='m-auto w-full' onClick={handleOpen}>
                   <img
                     src={`https://data.bmkg.go.id/DataMKG/TEWS/${newestEarthquake.shakemap}`}
                     alt='Shakemap'
                     className='h-auto w-full cursor-pointer overflow-hidden transition-opacity hover:opacity-90'
                     title={newestEarthquake.wilayah}
                   />
-                </a>
+                </button>
               </CardBody>
             </Card>
           ) : (
@@ -196,6 +207,14 @@ export default function HomePage() {
           )}
         </section>
       </section>
+
+      <Dialog size='sm' open={open} handler={handleOpen}>
+        <img
+          src={`https://data.bmkg.go.id/DataMKG/TEWS/${newestEarthquake?.shakemap}`}
+          alt='Shakemap'
+          className='h-auto w-full'
+        />
+      </Dialog>
     </>
   );
 }
