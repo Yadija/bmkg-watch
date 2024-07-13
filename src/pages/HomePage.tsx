@@ -9,6 +9,7 @@ import {
 import { useEffect, useState } from 'react';
 
 import { fetchNewestEarthquake, fetchWeather } from '../api';
+import WeatherContent from '../components/weather/WeatherContent';
 import { NewestEarthquake, WeatherData } from '../interface';
 import { formatWeatherData } from '../utils';
 
@@ -93,51 +94,14 @@ export default function HomePage() {
                   .map((area) => (
                     <Card key={area.id} className='mt-2'>
                       <CardBody>
-                        <Typography variant='h2' className='mb-2 text-xl font-semibold'>
+                        <Typography variant='h2' className='text-xl font-semibold'>
                           {area.name}{' '}
                           <span className='text-sm'>
                             ({formattedWeather.issue.datetime})
                           </span>
                         </Typography>
 
-                        {area.timeranges.length === 0 ? (
-                          <Typography variant='paragraph' className='text-red-500'>
-                            Data tidak tersedia.
-                          </Typography>
-                        ) : (
-                          <section className='grid grid-cols-1 gap-5 md:grid-cols-2'>
-                            {area.timeranges.slice(0, 4).map((timerange) => (
-                              <Card key={timerange.hourly}>
-                                <CardBody>
-                                  <Typography
-                                    variant='h3'
-                                    className='mb-2 text-base font-semibold'
-                                  >
-                                    {timerange.datetime}
-                                  </Typography>
-
-                                  {timerange.parameters &&
-                                    timerange.parameters.map(
-                                      (parameter) =>
-                                        parameter && (
-                                          <Typography
-                                            key={parameter.id}
-                                            variant='paragraph'
-                                            className='text-sm'
-                                          >
-                                            <span className='font-bold'>
-                                              {parameter.description}
-                                            </span>
-                                            : {parameter.values[0].value}{' '}
-                                            {parameter.values[0].unit}
-                                          </Typography>
-                                        ),
-                                    )}
-                                </CardBody>
-                              </Card>
-                            ))}
-                          </section>
-                        )}
+                        <WeatherContent timeranges={area.timeranges.slice(0, 4)} />
                       </CardBody>
                     </Card>
                   ))}
@@ -154,6 +118,15 @@ export default function HomePage() {
                   >
                     &nbsp;
                   </Typography>
+                  <Typography
+                    as='div'
+                    variant='paragraph'
+                    className='mb-5 ml-3 mt-8 h-6 w-52 rounded-full bg-gray-300 p-3'
+                  >
+                    &nbsp;
+                  </Typography>
+
+                  <section className='h-[420px] w-full bg-gray-300 lg:h-[300px]'></section>
                 </CardBody>
               </Card>
             </section>
