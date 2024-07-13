@@ -40,13 +40,13 @@ const getHourlyParameters = (parameters: Parameter[], hour: string) =>
       const timerange = parameter.timeranges.filter(
         (timerange) => timerange.hour === hour,
       )[0];
-      return timerange
-        ? {
-            id: parameter.id,
-            description: parameter.description,
-            values: timerange.values,
-          }
-        : null;
+      return (
+        timerange && {
+          id: parameter.id,
+          description: parameter.description,
+          values: timerange.values,
+        }
+      );
     })
     .filter(Boolean);
 
@@ -86,13 +86,13 @@ const getDailyParameters = (parameters: Parameter[], day: string) =>
       const timerange = parameter.timeranges.filter(
         (timerange) => timerange.datetime.substring(6, 8) === day,
       )[0];
-      return timerange
-        ? {
-            id: parameter.id,
-            description: parameter.description,
-            values: timerange.values,
-          }
-        : null;
+      return (
+        timerange && {
+          id: parameter.id,
+          description: parameter.description,
+          values: timerange.values,
+        }
+      );
     })
     .filter(Boolean);
 
