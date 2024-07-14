@@ -2,6 +2,8 @@
 import 'swiper/css';
 import 'swiper/css/navigation';
 
+import { PiWind } from 'react-icons/pi';
+import { WiHumidity, WiWindDeg } from 'react-icons/wi';
 // import required modules
 import { Navigation } from 'swiper/modules';
 // Import Swiper React components
@@ -53,7 +55,7 @@ export default function WeatherContent({ timeranges }: WeatherContentProps) {
 
                 return (
                   <SwiperSlide key={timerange.hourly}>
-                    <section className='relative flex flex-col gap-5 bg-blue-200'>
+                    <section className='relative flex cursor-default flex-col gap-5 bg-blue-200'>
                       <section className='absolute top-0'>
                         <p className='p-3 text-2xl font-bold sm:text-xl'>
                           {timerange.datetime.split(' ').pop()}
@@ -85,25 +87,34 @@ export default function WeatherContent({ timeranges }: WeatherContentProps) {
                         </section>
                       </section>
 
-                      <section className='flex h-52 w-full flex-col items-center justify-center gap-5 p-5 sm:h-20 sm:flex-row lg:justify-start'>
-                        <section className='flex flex-col items-center'>
-                          <p className='font-bold'>Kelembaban</p>
+                      <section className='flex w-full flex-row items-center justify-center gap-5 p-5 lg:justify-start'>
+                        <section
+                          className='flex cursor-pointer flex-col items-center'
+                          title='Kelembaban'
+                        >
+                          <WiHumidity size={34} />
                           <p className='text-sm'>
                             {formattedParameters.find(
                               (parameter) => parameter.id === 'hu',
                             )?.value || 'N/A'}
                           </p>
                         </section>
-                        <section className='flex flex-col items-center'>
-                          <p className='font-bold'>Kecepatan Angin</p>
+                        <section
+                          className='flex cursor-pointer flex-col items-center'
+                          title='Kecepatan Angin'
+                        >
+                          <PiWind size={34} />
                           <p className='text-sm'>
                             {formattedParameters.find(
                               (parameter) => parameter.id === 'ws',
                             )?.value || 'N/A'}
                           </p>
                         </section>
-                        <section className='flex flex-col items-center'>
-                          <p className='font-bold'>Arah Angin</p>
+                        <section
+                          className='flex cursor-pointer flex-col items-center'
+                          title='Arah Angin'
+                        >
+                          <WiWindDeg size={34} />
                           <p className='text-sm'>
                             {formattedParameters.find(
                               (parameter) => parameter.id === 'wd',
