@@ -4,12 +4,13 @@ import 'swiper/css/navigation';
 
 import { PiWind } from 'react-icons/pi';
 import { WiHumidity, WiWindDeg } from 'react-icons/wi';
-// import required modules
+// Import required modules
 import { Navigation } from 'swiper/modules';
 // Import Swiper React components
 import { Swiper, SwiperSlide } from 'swiper/react';
 
-import { formatParameters } from '../../utils';
+import { CARD } from '../../constant';
+import WeatherParameter from './WeatherParameter';
 
 interface Parameter {
   id: string;
@@ -33,6 +34,34 @@ export default function WeatherContent({ timeranges }: WeatherContentProps) {
   const dailyTimeranges = timeranges.map((timerange) => timerange.day); // [a, a, ..., b, b, ...]
   const uniqueDailyTimeranges = [...new Set(dailyTimeranges)]; // [a, b]
 
+  const getParameterValue = (parameters: Parameter[], id: string, unit: string) => {
+    return (
+      parameters
+        .find((parameter) => parameter.id === id)
+        ?.values.find((value) => value.unit === unit)?.value ?? 'N/A'
+    );
+  };
+
+  const temperature = (parameters: Parameter[], unit: string = 'C') => {
+    const value = getParameterValue(parameters, 't', unit);
+    return value === 'N/A' ? value : `${value}°${unit}`;
+  };
+
+  const humidity = (parameters: Parameter[]) => {
+    const value = getParameterValue(parameters, 'hu', '%');
+    return value === 'N/A' ? value : `${value}%`;
+  };
+
+  const windSpeed = (parameters: Parameter[]) => {
+    const value = getParameterValue(parameters, 'ws', 'KPH');
+    return value === 'N/A' ? value : `${value.replace('.', ',')} Km/jam`;
+  };
+
+  const windDirection = (parameters: Parameter[]) => {
+    const value = getParameterValue(parameters, 'wd', 'CARD');
+    return value === 'N/A' ? value : CARD[value as keyof typeof CARD];
+  };
+
   return (
     <>
       {uniqueDailyTimeranges.map((day) => (
@@ -51,7 +80,7 @@ export default function WeatherContent({ timeranges }: WeatherContentProps) {
             {timeranges
               .filter((timerange) => timerange.day === day)
               .map((timerange) => {
-                const formattedParameters = formatParameters(timerange.parameters);
+                const parameters = timerange.parameters;
 
                 return (
                   <SwiperSlide key={timerange.hourly}>
@@ -80,47 +109,28 @@ export default function WeatherContent({ timeranges }: WeatherContentProps) {
                           </svg>
                         </section>
                         <section className='grid h-[100px] w-full place-items-center overflow-hidden lg:h-[200px]'>
-                          <p className='text-5xl'>
-                            {formattedParameters.find((parameter) => parameter.id === 't')
-                              ?.value || '-'}
+                          <p className='cursor-pointer text-5xl' title='Suhu'>
+                            {temperature(parameters, 'C')}
                           </p>
                         </section>
                       </section>
 
                       <section className='flex w-full flex-row items-center justify-center gap-5 p-5 lg:justify-start'>
-                        <section
-                          className='flex cursor-pointer flex-col items-center'
+                        <WeatherParameter
                           title='Kelembaban'
-                        >
-                          <WiHumidity size={34} />
-                          <p className='text-sm'>
-                            {formattedParameters.find(
-                              (parameter) => parameter.id === 'hu',
-                            )?.value || 'N/A'}
-                          </p>
-                        </section>
-                        <section
-                          className='flex cursor-pointer flex-col items-center'
+                          icon={WiHumidity}
+                          value={humidity(parameters)}
+                        />
+                        <WeatherParameter
                           title='Kecepatan Angin'
-                        >
-                          <PiWind size={34} />
-                          <p className='text-sm'>
-                            {formattedParameters.find(
-                              (parameter) => parameter.id === 'ws',
-                            )?.value || 'N/A'}
-                          </p>
-                        </section>
-                        <section
-                          className='flex cursor-pointer flex-col items-center'
+                          icon={PiWind}
+                          value={windSpeed(parameters)}
+                        />
+                        <WeatherParameter
                           title='Arah Angin'
-                        >
-                          <WiWindDeg size={34} />
-                          <p className='text-sm'>
-                            {formattedParameters.find(
-                              (parameter) => parameter.id === 'wd',
-                            )?.value || 'N/A'}
-                          </p>
-                        </section>
+                          icon={WiWindDeg}
+                          value={windDirection(parameters)}
+                        />
                       </section>
                     </section>
                   </SwiperSlide>
