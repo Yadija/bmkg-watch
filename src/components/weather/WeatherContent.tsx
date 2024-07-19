@@ -3,8 +3,7 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 
 import { Typography } from '@material-tailwind/react';
-import { PiWind } from 'react-icons/pi';
-import { WiHumidity, WiWindDeg } from 'react-icons/wi';
+import { WiHumidity, WiStrongWind, WiWindDeg } from 'react-icons/wi';
 // Import required modules
 import { Navigation } from 'swiper/modules';
 // Import Swiper React components
@@ -89,22 +88,29 @@ export default function WeatherContent({ timeranges }: WeatherContentProps) {
               .map((timerange) => {
                 const parameters = timerange.parameters;
 
-                const weatherName =
-                  WeatherCode[weather(parameters) as keyof typeof WeatherCode];
+                const time = timerange.datetime.split(' ').pop() as string;
+                const hour = parseInt(time?.slice(0, 2), 10);
+                const isDay = hour >= 6 && hour < 18;
+                const classnameDay = isDay
+                  ? 'bg-blue-200 text-blue-gray-700'
+                  : 'bg-gray-800 text-gray-400';
+
+                const weatherCode = weather(parameters);
+                const weatherName = WeatherCode[weatherCode as keyof typeof WeatherCode];
 
                 return (
                   <SwiperSlide key={timerange.hourly}>
-                    <section className='relative flex cursor-default flex-col gap-5 bg-blue-200'>
+                    <section
+                      className={`relative flex cursor-default flex-col gap-5 ${classnameDay}`}
+                    >
                       <section className='absolute top-0'>
-                        <p className='p-3 text-2xl font-bold sm:text-xl'>
-                          {timerange.datetime.split(' ').pop()}
-                        </p>
+                        <p className='p-3 text-2xl font-bold sm:text-xl'>{time}</p>
                       </section>
 
                       <section className='flex flex-col justify-between gap-5 lg:flex-row'>
                         <section className='grid h-[200px] w-full place-items-center overflow-hidden'>
                           <section className='cursor-pointer' title={weatherName}>
-                            <WeatherIcon value={weather(parameters)} />
+                            <WeatherIcon value={weatherCode} day={isDay} />
                             <Typography
                               variant='h1'
                               className='text-center text-2xl font-bold'
@@ -128,7 +134,7 @@ export default function WeatherContent({ timeranges }: WeatherContentProps) {
                         />
                         <WeatherParameter
                           title='Kecepatan Angin'
-                          icon={PiWind}
+                          icon={WiStrongWind}
                           value={windSpeed(parameters)}
                         />
                         <WeatherParameter
