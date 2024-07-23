@@ -41,14 +41,33 @@ const parseEarthquakeData = (xmlDoc: XMLDocument) => {
 export const parseWeatherData = (xmlDoc: XMLDocument): WeatherData => {
   const issueElement = xmlDoc.getElementsByTagName('issue')[0];
 
+  const getTagValue = (parent: Element, tagName: string) => {
+    const element = parent.getElementsByTagName(tagName)[0];
+    return element ? element.textContent || '' : '';
+  };
+
+  const padTwoDigits = (num: string) => num.padStart(2, '0');
+
+  const year = getTagValue(issueElement, 'year');
+  const month = padTwoDigits(getTagValue(issueElement, 'month'));
+  const day = padTwoDigits(getTagValue(issueElement, 'day'));
+  const hour = padTwoDigits(getTagValue(issueElement, 'hour'));
+  const minute = padTwoDigits(getTagValue(issueElement, 'minute'));
+  const second = padTwoDigits(getTagValue(issueElement, 'second'));
+
+  let timestamp = getTagValue(issueElement, 'timestamp');
+  if (!timestamp && year && month && day && hour && minute && second) {
+    timestamp = `${year}${month}${day}${hour}${minute}${second}`;
+  }
+
   const issue: Issue = {
-    timestamp: issueElement.getElementsByTagName('timestamp')[0].textContent || '',
-    year: issueElement.getElementsByTagName('year')[0].textContent || '',
-    month: issueElement.getElementsByTagName('month')[0].textContent || '',
-    day: issueElement.getElementsByTagName('day')[0].textContent || '',
-    hour: issueElement.getElementsByTagName('hour')[0].textContent || '',
-    minute: issueElement.getElementsByTagName('minute')[0].textContent || '',
-    second: issueElement.getElementsByTagName('second')[0].textContent || '',
+    timestamp,
+    year,
+    month,
+    day,
+    hour,
+    minute,
+    second,
   };
 
   const areas = Array.from(xmlDoc.getElementsByTagName('area')).map((area) => {
@@ -84,7 +103,7 @@ export const parseWeatherData = (xmlDoc: XMLDocument): WeatherData => {
 
     return {
       id: area.getAttribute('id') || '',
-      name: area.getElementsByTagName('name')[0].textContent || '',
+      name: getTagValue(area, 'name'),
       latitude: area.getAttribute('latitude') || '',
       longitude: area.getAttribute('longitude') || '',
       description: area.getAttribute('description') || '',
